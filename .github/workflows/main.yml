@@ -1,0 +1,35 @@
+name: Update warehouse grades
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Access Repository
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.9"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: python3 manage.py test > stdout.txt 2> stderr.txt
+
+      - name: Tests fail
+        if: failure()
+        run: |
+          line=$(head -n 2 stderr.txt )
+          curl -d "username=${{ github.actor }}&repo=${{ github.repository }}&test=$line" -X POST https://warehouse-api.joincoded.com/github/task/pushed/python/
+
+      - name: Re-run tests
+        run: python3 manage.py test
+
+      - name: Tests pass
+        if: success()
+        run: curl -d "username=${{ github.actor }}&repo=${{ github.repository }}&test=." -X POST https://warehouse-api.joincoded.com/github/task/pushed/python/
