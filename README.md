@@ -2,7 +2,7 @@ Let's secure our views!
 
 ## Steps
 
-1. Fork and clone [this repository](https://github.com/JoinCODED/TASK-Django-M8-Authentication).
+1. Fork and clone [this repository](https://github.com/JoinCODED/TASK-Django-M8-Login-View).
 2. Create a `virtual environment`.
 3. Install the packages using `pip install -r requirements/dev.lock`.
 4. Create a login api, [this package](https://pypi.org/project/djangorestframework-simplejwt/) will help.
