@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from flights import views
 
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("flights/", views.FlightsList.as_view(), name="flights-list"),
@@ -35,5 +37,12 @@ urlpatterns = [
         "booking/<int:booking_id>/cancel/",
         views.CancelBooking.as_view(),
         name="cancel-booking",
+    ),
+    path("login/", TokenObtainPairView.as_view(), name="login"),
+    
+     path(
+        "booking/flight/<int:flight_id>/",
+        views.BookFlight.as_view(),
+        name="book-flight",
     ),
 ]
